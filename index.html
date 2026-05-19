@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora de Média Bimestral</title>
+  <link rel="shortcut icon" type="image/png" href="./icon.png">
+  <link rel="icon" type="image/png" href="./icon.png"> 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body{
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(135deg,#2b0000,#5f0000,#990000);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .background{
+      position:absolute;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      z-index:0;
+    }
+
+    .circle{
+      position:absolute;
+      border-radius:50%;
+      background:rgba(255,255,255,0.08);
+      animation:float 8s infinite ease-in-out;
+    }
+
+    .circle:nth-child(1){
+      width:220px;
+      height:220px;
+      top:10%;
+      left:5%;
+    }
+
+    .circle:nth-child(2){
+      width:320px;
+      height:320px;
+      bottom:-50px;
+      right:-50px;
+      animation-delay:2ms;
+    }
+
+    .circle:nth-child(3){
+      width:140px;
+      height:140px;
+      bottom:20%;
+      left:20%;
+      animation-delay:1s;
+    }
+
+    @keyframes float{
+      0%,100%{
+        transform:translateY(0px);
+      }
+      50%{
+        transform:translateY(-20px);
+      }
+    }
+
+    .container{
+      position:relative;
+      z-index:2;
+      width:90%;
+      max-width:450px;
+      background:rgba(255,255,255,0.1);
+      backdrop-filter:blur(15px);
+      border:1px solid rgba(255,255,255,0.15);
+      border-radius:28px;
+      padding:35px;
+      box-shadow:0 20px 50px rgba(0,0,0,0.4);
+      color:white;
+      animation:fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn{
+      from{
+        opacity:0;
+        transform:translateY(20px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    h1{
+      text-align:center;
+      font-size:2rem;
+      margin-bottom:10px;
+      font-weight:700;
+    }
+
+    .subtitle{
+      text-align:center;
+      color:#ffd6d6;
+      margin-bottom:30px;
+      font-size:0.95rem;
+      line-height:1.5;
+    }
+
+    .input-group{
+      margin-bottom:20px;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      font-weight:500;
+      color:#fff5f5;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      border-radius:14px;
+      border:none;
+      outline:none;
+      background:rgba(255,255,255,0.12);
+      color:white;
+      font-size:1rem;
+      transition:0.3s;
+    }
+
+    input:focus{
+      background:rgba(255,255,255,0.18);
+      transform:scale(1.02);
+    }
+
+    input::placeholder{
+      color:#ffd6d6;
+    }
+
+    button{
+      width:100%;
+      padding:15px;
+      border:none;
+      border-radius:16px;
+      background:linear-gradient(135deg,#ff3b3b,#b30000);
+      color:white;
+      font-size:1rem;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.3s;
+      margin-top:10px;
+      box-shadow:0 10px 25px rgba(255,0,0,0.35);
+    }
+
+    button:hover{
+      transform:translateY(-2px) scale(1.01);
+      box-shadow:0 15px 30px rgba(255,0,0,0.45);
+    }
+
+    .resultado{
+      margin-top:30px;
+      padding:20px;
+      border-radius:18px;
+      background:rgba(255,255,255,0.08);
+      text-align:center;
+      display:none;
+      animation:aparecer 0.5s ease;
+    }
+
+    @keyframes aparecer{
+      from{
+        opacity:0;
+        transform:scale(0.9);
+      }
+      to{
+        opacity:1;
+        transform:scale(1);
+      }
+    }
+
+    .resultado h2{
+      margin-bottom:10px;
+      font-size:1.3rem;
+    }
+
+    .media{
+      font-size:3rem;
+      font-weight:700;
+      color:#ff4d4d;
+    }
+
+    .formula{
+      margin-top:15px;
+      color:#ffe5e5;
+      font-size:0.9rem;
+      line-height:1.7;
+    }
+
+    .erro{
+      display:none;
+      margin-top:15px;
+      padding:14px;
+      border-radius:14px;
+      background:rgba(255,0,0,0.15);
+      border:1px solid rgba(255,0,0,0.35);
+      color:#fff;
+      text-align:center;
+      font-weight:500;
+      animation:aparecer 0.3s ease;
+    }
+
+    footer{
+      text-align:center;
+      margin-top:25px;
+      color:#ffd6d6;
+      font-size:0.8rem;
+      line-height:1.5;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="background">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+  </div>
+
+  <div class="container">
+
+    <h1>📚 Média Bimestral</h1>
+
+    <p class="subtitle">
+      1º Bimestre = Peso 2<br>
+      2º Bimestre = Peso 3<br><br>
+      Descubra quanto precisa tirar para alcançar média 70.
+    </p>
+
+    <div class="input-group">
+      <label for="nota1">Nota do 1º Bimestre</label>
+
+      <input
+        type="number"
+        id="nota1"
+        placeholder="Digite sua nota"
+        min="0"
+        max="100"
+      >
+    </div>
+
+    <button onclick="calcularNotaNecessaria()">
+      Descobrir Nota Necessária
+    </button>
+
+    <div id="mensagemErro" class="erro">
+      ⚠️ Digite uma nota válida entre 0 e 100.
+    </div>
+
+    <div class="resultado" id="resultado">
+
+      <h2>Você precisa tirar:</h2>
+
+      <div class="media" id="media">0</div>
+
+      <div class="formula" id="formula"></div>
+
+    </div>
+
+    <footer>
+      Média final desejada: 70 pontos ❤️
+    </footer>
+
+  </div>
+
+  <script>
+
+    function calcularNotaNecessaria(){
+
+      const nota1 = parseFloat(
+        document.getElementById('nota1').value
+      );
+
+      const erro = document.getElementById('mensagemErro');
+
+      if(isNaN(nota1) || nota1 < 0 || nota1 > 100){
+
+        erro.style.display = 'block';
+
+        setTimeout(() => {
+          erro.style.display = 'none';
+        },3000);
+
+        return;
+      }
+
+      // Média desejada
+      const mediaDesejada = 70;
+
+      // Fórmula:
+      // (nota1*2 + nota2*3) / 5 = 70
+
+      const notaNecessaria =
+        ((mediaDesejada * 5) - (nota1 * 2)) / 3;
+
+      document.getElementById('media').innerText =
+        notaNecessaria.toFixed(1);
+
+      let mensagem = `
+        Fórmula:<br>
+        (${nota1} × 2 + Nota × 3) ÷ 5 = ${mediaDesejada}
+        <br><br>
+
+        Cálculo:<br>
+        ((${mediaDesejada} × 5) - (${nota1} × 2)) ÷ 3
+        <br>
+
+        = ${notaNecessaria.toFixed(1)}
+      `;
+
+      if(notaNecessaria > 100){
+
+        mensagem += `
+          <br><br>
+          ⚠️ Não é possível alcançar média 70.
+        `;
+
+      } else if(notaNecessaria <= 0){
+
+        mensagem += `
+          <br><br>
+          🎉 Você já garantiu média 70!
+        `;
+
+      } else {
+
+        mensagem += `
+          <br><br>
+          ✅ Você precisa tirar
+          ${notaNecessaria.toFixed(1)}
+          no 2º bimestre.
+        `;
+      }
+
+      document.getElementById('formula').innerHTML = mensagem;
+
+      document.getElementById('resultado').style.display = 'block';
+    }
+
+  </script>
+
+</body>
+</html>
